@@ -1,27 +1,25 @@
-class Elevator {
-    constructor() {
+class Elavator{
+    constructor(){
         this.currentFloor = 1;
-        this.people = 0;
+        this.floors = {1:[], 2:[], 3:[], 4:[]};
     }
 
-    moveToFloor(floor) {
-        this.currentFloor = floor;
+    moveToFloor(targetFloor){
+        while(currentFloor != targetFloor){
+            if(this.currentFloor < targetFloor){
+                targetFloor++;
+            }else if(this.currentFloor > targetFloor){
+                targetFloor--;
+            }
+        }
+        console.log("arrived");
     }
 
-    loadPeople(count) {
-        this.people += count;
-    }
-
-    unloadPeople() {
-        this.people = 0;
-    }
-
-    getState() {
-        return {
-            currentFloor: this.currentFloor,
-            people: this.people
-        };
+    getState(){
+        return{
+            currentFloor:this.currentFloor,
+            floors:this.floors
+        }
     }
 }
-
 module.exports = Elevator;

@@ -7,20 +7,14 @@ const elevator = new Elevator();
 wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
         const msg = JSON.parse(message);
-
-        switch (msg.type) {
-            case 'moveToFloor':
-                elevator.moveToFloor(msg.floor);
-                break;
-            case 'loadPeople':
-                elevator.loadPeople(msg.count);
-                break;
-            case 'unloadPeople':
-                elevator.unloadPeople();
-                break;
+        if (msg.type === 'moveToFloor') {
+            elevator.moveToFloor(msg.floor);
+            broadcastElevatorState();
         }
+    });
 
-        broadcastElevatorState();
+    ws.on('close', () => {
+        console.log('Client disconnected');
     });
 });
 
@@ -30,5 +24,3 @@ function broadcastElevatorState() {
         client.send(state);
     });
 }
-
-module.exports = wss;
