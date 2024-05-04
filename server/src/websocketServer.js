@@ -9,12 +9,10 @@ wss.on('connection', function connection(ws) {
         const msg = JSON.parse(message);
         if (msg.type === 'moveToFloor') {
             elevator.moveToFloor(msg.floor);
-            broadcastElevatorState();
+            setTimeout(() => {
+                broadcastElevatorState(); // 状態が更新された後にブロードキャスト
+            }, 1000 * Math.abs(msg.floor - elevator.currentFloor));
         }
-    });
-
-    ws.on('close', () => {
-        console.log('Client disconnected');
     });
 });
 
@@ -24,3 +22,5 @@ function broadcastElevatorState() {
         client.send(state);
     });
 }
+
+module.exports = wss;
